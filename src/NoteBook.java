@@ -48,8 +48,8 @@ public class NoteBook {
         System.out.println("There is " + notes.size() + " Notes in this NoteBook");
         for (Note note : notes.values()) {
             System.out.print(i + " -> ");
-            System.out.print(note);
-            System.out.println("\t\t\t\t" + note.getTime());
+            System.out.print(note.getName());
+            System.out.println("\t\t\t" + note.getTime());
             i++;
         }
     }

@@ -15,6 +15,10 @@ public class Note {
         return name;
     }
 
+    public String getText() {
+        return text;
+    }
+
     public LocalDateTime getTime() {
         return time;
     }

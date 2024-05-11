@@ -1,5 +1,7 @@
 import com.sun.jdi.request.DuplicateRequestException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Menu {
@@ -15,8 +17,12 @@ public class Menu {
 
     public static void addNoteMenu(NoteBook noteBook, Scanner scan) throws DuplicateNameException {
         String text = "";
-        System.out.print("Enter Note's Title : ");
+        System.out.print("Enter Note's Title (if you want to back to main menu enter 0): ");
+        scan.nextLine();
         String name = scan.nextLine();
+        if (name.equals("0")) {
+            return;
+        }
         System.out.println();
         if (noteBook.containNote(name)) {
             throw new DuplicateNameException();
@@ -26,18 +32,72 @@ public class Menu {
             String tmp = scan.nextLine();
             text = text + "\n" + tmp;
         } while (!text.contains("#"));
-        text.replace("#", ".");
+        text = text.split("#")[0];
         noteBook.addNote(name, text);
+        System.out.println("success");
+        System.out.println(name);
+    }
+
+
+    public static void removeNoteMenu(NoteBook noteBook, Scanner scan) throws NotFoundException, EmptyNoteBookException{
+        System.out.println();
+        if (noteBook.notes.isEmpty()) {
+            throw new EmptyNoteBookException();
+        }
+        noteBook.printNoteBook();
+        System.out.println();
+        System.out.print("Choose which one to remove (if you want to back to main menu enter 0): ");
+        int index = scan.nextInt();
+        if (index == 0) {
+            return;
+        }
+        if (index > noteBook.notes.size()) {
+            throw new NotFoundException();
+        }
+        noteBook.removeNote(index);
+        System.out.println();
         System.out.println("success");
     }
 
-    public static void printShowMenu(NoteBook noteBook, Scanner scan) {
-        noteBook.printNoteBook();
-        System.out.println();
+    public static void printShowMenu(NoteBook noteBook, Scanner scan) throws NotFoundException, EmptyNoteBookException {
         System.out.println();
         noteBook.printNoteBook();
-        System.out.print("Choose which one you want to read : ");
+        if (noteBook.notes.isEmpty()) {
+            throw new EmptyNoteBookException();
+        }
+        System.out.println();
+        System.out.print("Choose which one you want to read (if you want to back to main menu enter 0): ");
         int index = scan.nextInt();
+        if (index == 0) {
+            return;
+        }
+        if (index > noteBook.notes.size()) {
+            throw new NotFoundException();
+        }
         noteBook.printNote(index);
+    }
+
+    public static void printExportMenu(NoteBook noteBook, Scanner scan) throws EmptyNoteBookException, IOException, NotFoundException {
+        System.out.println();
+        noteBook.printNoteBook();
+        if (noteBook.notes.isEmpty()) {
+            throw new EmptyNoteBookException();
+        }
+        System.out.println();
+        System.out.println("Choose which file you want to save : ");
+        int index = scan.nextInt();
+        if (index > noteBook.notes.size()) {
+            throw new NotFoundException();
+        }
+        int i = 1;
+        String filePath = "C:\\Users\\hamid\\Desktop\\ap stuff\\ap workshop\\noteBook\\export";
+        FileWriter fileWriter = new FileWriter(filePath, true);
+        for (Note note : noteBook.notes.values()) {
+            if (i == index) {
+                fileWriter.write(note.getText());
+                System.out.println("note successfully added to text file name " + note.getName() + " in export directory");
+            }
+        }
+        fileWriter.close();
     }
 }
