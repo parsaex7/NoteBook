@@ -1,5 +1,6 @@
 import com.sun.jdi.request.DuplicateRequestException;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
@@ -90,14 +91,22 @@ public class Menu {
             throw new NotFoundException();
         }
         int i = 1;
-        String filePath = "C:\\Users\\hamid\\Desktop\\ap stuff\\ap workshop\\noteBook\\export";
-        FileWriter fileWriter = new FileWriter(filePath, true);
+        Note mainNote = null;
         for (Note note : noteBook.notes.values()) {
             if (i == index) {
-                fileWriter.write(note.getText());
-                System.out.println("note successfully added to text file name " + note.getName() + " in export directory");
+                mainNote = note;
             }
         }
+        if (mainNote == null) {
+            throw new NotFoundException();
+        }
+        String filePath = "./export/";
+        filePath = filePath + mainNote.getName() + ".txt";
+        File txtFile = new File(filePath);
+        txtFile.createNewFile();
+        FileWriter fileWriter = new FileWriter(txtFile);
+        fileWriter.write(mainNote.getText());
+        System.out.println("note successfully added to file named " + mainNote.getName() + " in export directory");
         fileWriter.close();
     }
 }

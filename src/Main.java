@@ -25,7 +25,7 @@ public class Main {
             } catch (EmptyNoteBookException e) {
                 System.out.println("Empty NoteBook, try another command");
             } catch (IOException e) {
-                System.out.println("attempt for open invalid file!");
+                System.out.println("invalid file path");
             }
         }
     }
