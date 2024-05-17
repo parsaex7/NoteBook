@@ -36,7 +36,6 @@ public class Menu {
         text = text.split("#")[0];
         noteBook.addNote(name, text);
         System.out.println("success");
-        System.out.println(name);
     }
 
 

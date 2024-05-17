@@ -35,7 +35,9 @@ public class NoteBook {
         for (Note note : notes.values()) {
             if (i == index) {
                 System.out.println(note);
+                return;
             }
+            i++;
         }
     }
 
